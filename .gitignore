@@ -11,3 +11,5 @@
 !.yarn/sdks
 !.yarn/versions
 .pnp.js
+.idea/*
+paper.js.iml
