@@ -196,9 +196,9 @@ if (!isNodeContext) {
     // JSDom does not have SVG rendering, so we can't test there.
     var svgFiles = {
         'butterfly': { tolerance: 1e-2 },
-        'viewbox': { tolerance: 1e-2 },
-        'clipping': {},
-        'arcs': {},
+        'viewbox': { tolerance: 5 },
+        'clipping': { tolerance: 5 },
+        'arcs': { tolerance: 5 },
         'symbol': {},
         'symbols': {},
         'blendModes': {},
