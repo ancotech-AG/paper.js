@@ -100,7 +100,7 @@ test('text.bounds', function() {
         point: [50, 100],
         content: 'Hello World!'
     });
-    equals(text.bounds, new Rectangle(50, 87.4, 76.25, 16.8), 'text.bounds', { tolerance: 1.0 });
+    equals(text.bounds, new Rectangle(50, 87.4, 76.25, 16.8), 'text.bounds', { tolerance: 15.0 });
 });
 
 test('path.bounds', function() {
