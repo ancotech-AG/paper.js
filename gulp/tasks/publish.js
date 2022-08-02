@@ -20,7 +20,14 @@ var gulp = require('gulp'),
     merge = require('merge-stream'),
     rename = require('gulp-rename'),
     jsonModifier = require('gulp-json-modifier'),
-    options = require('../utils/options.js');
+    dotenv = require('dotenv'),
+    options = require('../utils/options.js'),
+    release = require('gulp-github-release'),
+    result = dotenv.config();
+
+if (result.error) {
+    throw result.error;
+}
 
 var packages = ['paper-jsdom', 'paper-jsdom-canvas'],
     sitePath = path.resolve('../paperjs.org'),
@@ -43,6 +50,7 @@ gulp.task('publish', function(callback) {
         'publish:commit',
         'publish:website',
         'publish:release',
+        'publish:github',
         'publish:load',
         callback
     );
@@ -167,4 +175,18 @@ gulp.task('publish:load', ['load'], function() {
         .pipe(git.add())
         .pipe(git.commit('Switch back to load.js versions on develop branch.'))
         .pipe(git.push('origin', 'develop'));
+});
+
+gulp.task('publish:github', ['github'], function() {
+    return gulp.src('./dist/paperjs-v0.12.15.zip')
+        .pipe(release({
+            token: process.env.GH_TOKEN,        // or you can set an env var called GITHUB_TOKEN instead
+            owner: 'Ancotech',                  // if missing, it will be extracted from manifest (the repository.url field)
+            repo: 'ancotech-AG/paper.js',       // if missing, it will be extracted from manifest (the repository.url field)
+            name: 'publish-release v0.12.15',   // if missing, it will be the same as the tag
+            notes: 'First try',                 // if missing it will be left undefined
+            draft: true,                        // if missing it's false
+            prerelease: false,                  // if missing it's false
+            manifest: require('./package.json') // package.json from which default values will be extracted if they're missing
+        }));
 });
